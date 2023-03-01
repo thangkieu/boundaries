@@ -1,32 +1,27 @@
-const http = require("http");
 const fs = require("fs");
-const path = require("path");
+const fetch = require("node-fetch");
 
-const hostname = "127.0.0.1";
-const port = 3000;
+const list = [
+  "1898509",
+  "1898458",
+  "1896050",
+  "1895630",
+  "7050386",
+  "1891418",
+  "1891352",
+  "1889204",
+  "1887959",
+  "1904231",
+  "1886159",
+];
+list.forEach(fetchGeoJSON);
 
-const server = http.createServer((req, res) => {
-  if (req.url.startsWith("/boundaries")) {
-    const id = req.url.split("/boundaries/")[1];
-
-    // get geojson
-    fs.readFile(
-      path.resolve(__dirname, "data", `${id}_geojson.json`),
-      (err, data) => {
-        if (err) {
-          res.statusCode = 404;
-          res.end("Not found");
-          return;
-        }
-
-        res.statusCode = 200;
-        res.setHeader("Content-Type", "application/json");
-        res.end(data);
-      }
-    );
-  }
-});
-
-server.listen(port, hostname, () => {
-  console.log(`Server running at http://${hostname}:${port}/`);
-});
+function fetchGeoJSON(id) {
+  fetch(`http://polygons.openstreetmap.fr/get_geojson.py?id=${id}&params=0`)
+    .then((i) => i.text())
+    .then((data) => {
+      fs.writeFile(`data/${id}_geojson.json`, data, (err) => {
+        console.log("err", err);
+      });
+    });
+}

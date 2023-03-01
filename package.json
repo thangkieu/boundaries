@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/thangkieu/boundaries/issues"
   },
-  "homepage": "https://github.com/thangkieu/boundaries#readme"
+  "homepage": "https://github.com/thangkieu/boundaries#readme",
+  "dependencies": {
+    "node-fetch": "^2.6.9"
+  }
 }
